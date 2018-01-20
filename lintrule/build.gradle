@@ -1,0 +1,18 @@
+apply plugin: 'java-library'
+
+dependencies {
+    compileOnly 'com.android.tools.lint:lint-api:26.0.1'
+    compileOnly 'com.android.tools.lint:lint-checks:26.0.1'
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+jar {
+    manifest {
+        // Only use the "-v2" key here if your checks have been updated to the
+        // new 3.0 APIs (including UAST)
+        attributes("Lint-Registry-v2": "com.line.lintrule.MyIssueRegistry")
+    }
+}
+
