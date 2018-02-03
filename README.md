@@ -65,3 +65,22 @@ android.applicationVariants.all { variant ->
 }
 
 ```
+
+4.测试了在module中使用lint
+在模块的配置文件中需要添加以下配置,目的是为了能在每次运行或者rebuild的时候执行lint任务
+
+```
+afterEvaluate {
+        tasks.matching {
+            // 以process开头以ReleaseJavaRes或DebugJavaRes结尾的task
+            it.name.contains('transform')
+        }.each { task ->
+            task.dependsOn(lint)  // 任务依赖：执行task之前需要执行dependsOn指定的任务
+        }
+    }
+```
+
+
+5.发现问题
+ 测试的时候发现在运行或者rebuild的时候没有打印出所有issue，打印了一个然后就停止了，把abortOnError
+ 设置为false也不行。不过在模块的build/reports中会列出所有的issue。
