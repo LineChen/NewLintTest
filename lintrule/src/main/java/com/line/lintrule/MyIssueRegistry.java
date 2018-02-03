@@ -17,7 +17,8 @@ public class MyIssueRegistry extends IssueRegistry {
         System.out.println("***************************************************");
         return Arrays.asList(
                 CloseDetector.ISSUE,
-                LogDetector.ISSUE
+                LogDetector.ISSUE,
+                ToastDetector.ISSUE
         );
     }
 

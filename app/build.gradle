@@ -21,14 +21,33 @@ android {
         textReport true
         textOutput 'stdout'
         abortOnError true
+        ignoreWarnings true
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
 }
 
 // 配置assemble任务依赖lint，编译时就会执行Lint检查，如果报错则中断构建
-android.applicationVariants.all { variant ->
-    variant.outputs.each { output ->
-        def lintTask = tasks["lint${variant.name.capitalize()}"]
-        output.assemble.dependsOn(lintTask)
+//android.applicationVariants.all {
+//    variant ->
+//        variant.outputs.each { output ->
+//            def lintTask = tasks["lint${variant.name.capitalize()}"]
+//            output.assemble.dependsOn(lintTask)
+//        }
+//}
+
+//这种配置也是可以的
+afterEvaluate {
+    tasks.matching {
+        // 以process开头以ReleaseJavaRes或DebugJavaRes结尾的task
+        it.name.contains('assemble')
+    }.each { task ->
+        task.dependsOn(lint)  // 任务依赖：执行task之前需要执行dependsOn指定的任务
     }
 }
 
@@ -41,5 +60,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    compile project(':lintaar')
+    implementation project(':lintaar')
+    compile project(':im')
 }
